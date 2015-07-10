@@ -37,7 +37,6 @@ var Welcome = React.createClass({
         });
       }
     fetchWords(this.state.difficulty);
-    debugger
     }
   },
 
@@ -48,7 +47,7 @@ var Welcome = React.createClass({
   render: function() {
     if (this.state.words) {
       return (
-        <Game words={this.state.words}/>
+        <Game words={this.state.words} difficulty={this.state.difficulty} />
       )
     } else {
       return (
