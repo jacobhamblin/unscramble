@@ -3,14 +3,21 @@
 @import './msp-ultralight.scss';
 @import './msp-semibold.scss';
 
-@mixin difficulty {
+@mixin difficulty($size) {
   background-repeat: no-repeat;
   margin: 20px 50px;
-  width: 150px;
-  height: 150px;
-  background-size: 150px;
+  width: $size;
+  height: $size;
+  background-size: $size;
   cursor: pointer;
-  -webkit-filter: invert(1.0);
+  -webkit-filter: invert(0.95);
+  transition: all .3s ease;
+  &:hover {
+    -webkit-filter: invert(1.0);
+    background-size: $size * 1.1;
+    width: $size * 1.1;
+    height: $size * 1.1;
+  }
 }
 
 body {
@@ -58,28 +65,26 @@ body {
   text-transform: uppercase;
   font-weight: 100;
   letter-spacing: .5em;
+  margin-left: .5em;
 }
 
 .easy {
   background-image: url('../img/easy.png');
   order: 1;
-  @include difficulty;
-  background-size: 140px;
+  @include difficulty(140px);
 }
 
 .medium {
   background-image: url('../img/medium.png');
   order: 2;
-  @include difficulty;
+  @include difficulty(150px);
 }
 
 .hard {
-  @include difficulty;
+  @include difficulty(170px);
   background-image: url('../img/hard.png');
   order: 3;
   background-position: 0 -10px;
-  width: 170px;
-  background-size: 170px;
 }
 
 .wordShow {
@@ -108,6 +113,15 @@ body {
     text-align: center;
     color: #fff;
   }
+}
+
+.selected {
+  background-color: rgba(0, 255, 255, 0.3);
+  color: rgba(255, 255, 0, 1);
+}
+
+.wrong {
+  background-color: rgba(255, 0, 0, 0.3);
 }
 
 .stats-container {

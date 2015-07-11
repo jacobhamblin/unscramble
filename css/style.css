@@ -61,19 +61,25 @@ body {
   text-align: center;
   text-transform: uppercase;
   font-weight: 100;
-  letter-spacing: .5em; }
+  letter-spacing: .5em;
+  margin-left: .5em; }
 
 .easy {
   background-image: url("../img/easy.png");
   order: 1;
   background-repeat: no-repeat;
   margin: 20px 50px;
-  width: 150px;
-  height: 150px;
-  background-size: 150px;
+  width: 140px;
+  height: 140px;
+  background-size: 140px;
   cursor: pointer;
-  -webkit-filter: invert(1);
-  background-size: 140px; }
+  -webkit-filter: invert(0.95);
+  transition: all 0.3s ease; }
+  .easy:hover {
+    -webkit-filter: invert(1);
+    background-size: 154px;
+    width: 154px;
+    height: 154px; }
 
 .medium {
   background-image: url("../img/medium.png");
@@ -84,21 +90,31 @@ body {
   height: 150px;
   background-size: 150px;
   cursor: pointer;
-  -webkit-filter: invert(1); }
+  -webkit-filter: invert(0.95);
+  transition: all 0.3s ease; }
+  .medium:hover {
+    -webkit-filter: invert(1);
+    background-size: 165px;
+    width: 165px;
+    height: 165px; }
 
 .hard {
   background-repeat: no-repeat;
   margin: 20px 50px;
-  width: 150px;
-  height: 150px;
-  background-size: 150px;
+  width: 170px;
+  height: 170px;
+  background-size: 170px;
   cursor: pointer;
-  -webkit-filter: invert(1);
+  -webkit-filter: invert(0.95);
+  transition: all 0.3s ease;
   background-image: url("../img/hard.png");
   order: 3;
-  background-position: 0 -10px;
-  width: 170px;
-  background-size: 170px; }
+  background-position: 0 -10px; }
+  .hard:hover {
+    -webkit-filter: invert(1);
+    background-size: 187px;
+    width: 187px;
+    height: 187px; }
 
 .wordShow {
   top: 45%;
@@ -124,6 +140,13 @@ body {
     font-size: 5em;
     text-align: center;
     color: #fff; }
+
+.selected {
+  background-color: rgba(0, 255, 255, 0.3);
+  color: yellow; }
+
+.wrong {
+  background-color: rgba(255, 0, 0, 0.3); }
 
 .stats-container {
   top: 45%;

@@ -7,33 +7,40 @@ for (var i = 0; i < 26; i++) {
   ALPHABETCODES[ALPHABET[i]] = 65 + i;
 }
 
-var letterCount = 0;
-var formingWord = [];
 var wordsCompleted = 0;
 
 var Game = React.createClass({ displayName: 'Game',
 
   getInitialState: function getInitialState() {
-    var keyCodes = new Object();
     var currentWord = this.props.words[0].toLowerCase();
-
-    for (var i = 0; i < currentWord.length; i++) {
-      if (currentWord[i] === '-') {
-        keyCodes[189] = true;
-      } else {
-        keyCodes[ALPHABETCODES[currentWord[i]]] = true;
-      }
-    }
-
     var shuffledWord = this.shuffleWord(currentWord);
-
+    var keyCodes = this.setAcceptedKeyCodes();
     return {
       currentWord: currentWord,
       keyCodes: keyCodes,
       gameOver: false,
       secondsElapsed: 0,
-      shuffledWord: shuffledWord
+      shuffledWord: shuffledWord,
+      selectedLetters: [],
+      unselectedLetters: shuffledWord.split('')
     };
+  },
+
+  setAcceptedKeyCodes: function setAcceptedKeyCodes() {
+    var keyCodes = new Object();
+    var currentWord = this.props.words[wordsCompleted].toLowerCase();
+
+    for (var i = 0; i < currentWord.length; i++) {
+      if (currentWord[i] === '-') {
+        keyCodes[189] = true;
+      } else if (currentWord[i] === '\'') {
+        keyCodes[222] = true;
+      } else {
+        keyCodes[ALPHABETCODES[currentWord[i]]] = true;
+      }
+    }
+
+    return keyCodes;
   },
 
   componentDidMount: function componentDidMount() {
@@ -50,7 +57,8 @@ var Game = React.createClass({ displayName: 'Game',
       clearInterval(this.interval);
     } else if (this.state.secondsElapsed === 60) {
       this.setState({
-        gameOver: 'Lose'
+        gameOver: 'Lose',
+        selectedLetters: []
       });
       clearInterval(this.interval);
     }
@@ -61,7 +69,7 @@ var Game = React.createClass({ displayName: 'Game',
       return;
     }
     if (this.state.keyCodes[event.which]) {
-      this.moveLetter(event.which);
+      this.alterFormingWord(event.which);
     } else if (event.which === 8) {
       event.preventDefault();
       this.removeLetter();
@@ -88,55 +96,84 @@ var Game = React.createClass({ displayName: 'Game',
     return (wordsCompleted * 50 + bonus) * multiplier;
   },
 
-  moveLetter: function moveLetter(keyCode) {
-    if (letterCount < this.state.currentWord.length) {
-      letterCount += 1;
+  alterFormingWord: function alterFormingWord(keyCode) {
+    if (this.state.selectedLetters.length < this.state.currentWord.length) {
+      var unselectedLetters = this.state.unselectedLetters;
+      var selectedLetters = this.state.selectedLetters;
       if (keyCode === 189) {
-        formingWord.push('-');
+        unselectedLetters.splice(unselectedLetters.indexOf('-'), 1);
+        selectedLetters.push('-');
+        this.setState({
+          selectedLetters: selectedLetters,
+          unselectedLetters: unselectedLetters
+        });
+      } else if (keyCode === 222) {
+        unselectedLetters.splice(unselectedLetters.indexOf('-'), 1);
+        selectedLetters.push('-');
+        this.setState({
+          selectedLetters: selectedLetters,
+          unselectedLetters: unselectedLetters
+        });
       } else {
-        formingWord.push(ALPHABET[keyCode - 65]);
+        var letter = ALPHABET[keyCode - 65];
+        unselectedLetters.splice(unselectedLetters.indexOf(letter), 1);
+        selectedLetters.push(letter);
+        this.setState({
+          selectedLetters: selectedLetters,
+          unselectedLetters: unselectedLetters
+        });
       }
       this.checkWordCompleted();
-      console.log(formingWord.join(''));
+      console.log(this.state.selectedLetters.join(''));
     }
   },
 
   checkWordCompleted: function checkWordCompleted() {
-    if (formingWord.join('') === this.state.currentWord) {
+    if (this.state.selectedLetters.join('') === this.state.currentWord) {
       wordsCompleted += 1;
       if (wordsCompleted === 10) {
         this.setState({
-          gameOver: 'Win'
+          gameOver: 'Win',
+          selectedLetters: []
         });
       } else {
-        var keyCodes = new Object();
+        var keyCodes = this.setAcceptedKeyCodes();
         var curWord = this.props.words[wordsCompleted].toLowerCase();
-
-        for (var i = 0; i < curWord.length; i++) {
-          if (curWord[i] === '-') {
-            keyCodes[189] = true;
-          } else {
-            keyCodes[ALPHABETCODES[curWord[i]]] = true;
-          }
-        }
+        var shuffledWord = this.shuffleWord(curWord);
 
         this.setState({
-          currentWord: this.props.words[wordsCompleted].toLowerCase(),
+          currentWord: curWord,
           keyCodes: keyCodes,
-          shuffledWord: this.shuffleWord(this.props.words[wordsCompleted].toLowerCase())
+          shuffledWord: shuffledWord,
+          selectedLetters: [],
+          unselectedLetters: shuffledWord.split('')
         });
-        formingWord = [];
-        letterCount = 0;
       }
-    } else if (letterCount === this.state.currentWord.length) {
-      alert('wrong');
+    } else if (this.state.selectedLetters.length === this.state.currentWord.length) {
+      var letters = $('.letter-box');
+      for (var i = 0; i < letters.length; i++) {
+        var letterBox = $(letters[i]);
+        letterBox.addClass('wrong');
+      }
+      setTimeout(function () {
+        for (var i = 0; i < letters.length; i++) {
+          var letterBox = $(letters[i]);
+          letterBox.removeClass('wrong');
+        }
+      }, 100);
     }
   },
 
   removeLetter: function removeLetter() {
-    if (letterCount > 0) {
-      letterCount -= 1;
-      formingWord.pop();
+    var selectedLetters = this.state.selectedLetters;
+    var unselectedLetters = this.state.unselectedLetters;
+    if (selectedLetters.length > 0) {
+      var poppedLetter = selectedLetters.pop();
+      unselectedLetters.push(poppedLetter);
+      this.setState({
+        selectedLetters: selectedLetters,
+        unselectedLetters: unselectedLetters
+      });
     }
   },
 
@@ -146,27 +183,34 @@ var Game = React.createClass({ displayName: 'Game',
     return o.join('');
   },
 
+  populateLetters: function populateLetters(compilation, array, selected) {
+    var className = selected ? 'letter-box selected' : 'letter-box';
+    for (var i = 0; i < array.length; i++) {
+      var letter = array[i];
+      compilation.push(React.createElement('div', { className: className }, React.createElement('div', { className: 'letter' }, letter)));
+    }
+    return compilation;
+  },
+
   makeBoxes: function makeBoxes() {
-    var shuffledWord = this.state.shuffledWord;
+    var selectedLetters = this.state.selectedLetters;
+    var unselectedLetters = this.state.unselectedLetters;
     if (this.state.gameOver === 'Win') {
-      shuffledWord = 'You Win!';
+      unselectedLetters = 'You Win!';
     } else if (this.state.gameOver === 'Lose') {
-      shuffledWord = 'Time Up!';
+      unselectedLetters = 'Time Up!';
     }
 
     var letters = [];
+    letters = this.populateLetters(letters, selectedLetters, true);
+    letters = this.populateLetters(letters, unselectedLetters, false);
     console.log(this.state.currentWord);
-    for (var i = 0; i < shuffledWord.length; i++) {
-      var letter = shuffledWord[i];
-      letters.push(React.createElement('div', { className: 'letter-box' }, React.createElement('div', { className: 'letter' }, letter)));
-    }
     return { letters: letters };
   },
 
   render: function render() {
     return React.createElement('div', { className: 'container' }, React.createElement('div', { className: 'wordShow' }, this.makeBoxes()), React.createElement('div', { className: 'stats-container' }, React.createElement('div', { className: 'score' }, this.computeScore()), React.createElement('div', { className: 'timer' }, 60 - this.state.secondsElapsed)));
   }
-
 });
 'use strict';
 
