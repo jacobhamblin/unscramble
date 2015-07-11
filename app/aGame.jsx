@@ -102,27 +102,33 @@ var Game = React.createClass({
       var unselectedLetters = this.state.unselectedLetters;
       var selectedLetters = this.state.selectedLetters;
       if (keyCode === 189) {
-        unselectedLetters.splice(unselectedLetters.indexOf('-'), 1);
-        selectedLetters.push('-');
-        this.setState({
-          selectedLetters: selectedLetters,
-          unselectedLetters: unselectedLetters,
-        })
+        if (unselectedLetters.indexOf('-') > -1) {
+          unselectedLetters.splice(unselectedLetters.indexOf('-'), 1);
+          selectedLetters.push('-');
+          this.setState({
+            selectedLetters: selectedLetters,
+            unselectedLetters: unselectedLetters,
+          });
+        }
       } else if (keyCode === 222) {
-        unselectedLetters.splice(unselectedLetters.indexOf('\-'), 1)
-        selectedLetters.push('\-');
-        this.setState({
-          selectedLetters: selectedLetters,
-          unselectedLetters: unselectedLetters,
-        })
+        if (unselectedLetters.indexOf('\'') > -1) {
+          unselectedLetters.splice(unselectedLetters.indexOf('\-'), 1)
+          selectedLetters.push('\-');
+          this.setState({
+            selectedLetters: selectedLetters,
+            unselectedLetters: unselectedLetters,
+          });
+        }
       } else {
-        var letter = ALPHABET[keyCode - 65];
-        unselectedLetters.splice(unselectedLetters.indexOf(letter), 1)
-        selectedLetters.push(letter);
-        this.setState({
-          selectedLetters: selectedLetters,
-          unselectedLetters: unselectedLetters,
-        })
+        if (unselectedLetters.indexOf(ALPHABET[keyCode - 65]) > -1) {  
+          var letter = ALPHABET[keyCode - 65];
+          unselectedLetters.splice(unselectedLetters.indexOf(letter), 1)
+          selectedLetters.push(letter);
+          this.setState({
+            selectedLetters: selectedLetters,
+            unselectedLetters: unselectedLetters,
+          });
+        }
       }
       this.checkWordCompleted();
       console.log(this.state.selectedLetters.join(''));
