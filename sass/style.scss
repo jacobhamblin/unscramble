@@ -57,7 +57,7 @@ body {
   position: relative;
   transform: translateY(-42%);
   width: 100%;
-  height: 250px;
+  height: 125px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -69,9 +69,9 @@ body {
   top: 37%;
   transform: translateY(-37%);
   text-transform: uppercase;
-  width: 60%;
-  left: 19%;
-  height: 350px;
+  width: 40%;
+  left: 29%;
+  height: 175px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -79,8 +79,8 @@ body {
   flex-wrap: wrap;
   align-content: center;
   .letter-box {
-    width: 130px;
-    height: 130px;
+    width: 65px;
+    height: 65px;
     margin: 10px 10px;
     background-color: rgba(255,255,255,0.3);
     .letter {
@@ -88,7 +88,7 @@ body {
       transform: translateY(45%);
       position: relative;
       font-weight: 500;
-      font-size: 4em;
+      font-size: 2em;
       text-align: center;
       color: #fff;
     }
@@ -98,17 +98,17 @@ body {
 .easy {
   background-image: url('../img/easy.png');
   order: 1;
-  @include difficulty(140px);
+  @include difficulty(70px);
 }
 
 .medium {
   background-image: url('../img/medium.png');
   order: 2;
-  @include difficulty(150px);
+  @include difficulty(75px);
 }
 
 .hard {
-  @include difficulty(170px);
+  @include difficulty(85px);
   background-image: url('../img/hard.png');
   order: 3;
 }
@@ -127,8 +127,8 @@ body {
 
 
 .letter-box {
-  width: 145px;
-  height: 145px;
+  width: 90px;
+  height: 90px;
   margin: 15px 15px;
   background-color: rgba(255,255,255,0.3);
   .letter {
@@ -136,7 +136,7 @@ body {
     transform: translateY(40%);
     position: relative;
     font-weight: 500;
-    font-size: 5em;
+    font-size: 3em;
     text-align: center;
     color: #fff;
   }
