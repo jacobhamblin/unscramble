@@ -59,11 +59,11 @@ body {
 
 .welcome {
   position: relative;
-  top: 37%;
+  top: 40%;
   transform: translateY(-37%);
   text-transform: uppercase;
-  width: 40%;
-  left: 29%;
+  width: 35%;
+  left: 32%;
   height: 175px;
   display: flex;
   flex-direction: row;
@@ -89,7 +89,7 @@ body {
   background-image: url("../img/easy.png");
   order: 1;
   background-repeat: no-repeat;
-  margin: 20px 50px;
+  margin: 20px 25px;
   width: 70px;
   height: 70px;
   background-size: 70px;
@@ -106,7 +106,7 @@ body {
   background-image: url("../img/medium.png");
   order: 2;
   background-repeat: no-repeat;
-  margin: 20px 50px;
+  margin: 20px 25px;
   width: 75px;
   height: 75px;
   background-size: 75px;
@@ -121,7 +121,7 @@ body {
 
 .hard {
   background-repeat: no-repeat;
-  margin: 20px 50px;
+  margin: 20px 25px;
   width: 85px;
   height: 85px;
   background-size: 85px;
