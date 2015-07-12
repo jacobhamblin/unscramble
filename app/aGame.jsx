@@ -14,7 +14,7 @@ function animate () {
   requestAnimationFrame(animate);
   $('.background').css('-webkit-filter', 'hue-rotate(' + ((Math.cos(mod) - 1) * 50) + 'deg)');
 
-  mod += (.005 * (wordsCompleted + 1));
+  mod += (.0025 * (wordsCompleted + 1));
 }
 
 

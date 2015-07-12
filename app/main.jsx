@@ -2,7 +2,8 @@ var Main = React.createClass({
 
   render: function() {
     return (
-      <div className='background'>
+      <div className='outer-container'>
+        <div className='background' />
         <Welcome />
       </div>
     )

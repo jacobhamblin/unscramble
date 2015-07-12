@@ -15,7 +15,7 @@ function animate() {
   requestAnimationFrame(animate);
   $('.background').css('-webkit-filter', 'hue-rotate(' + (Math.cos(mod) - 1) * 50 + 'deg)');
 
-  mod += .005 * (wordsCompleted + 1);
+  mod += .0025 * (wordsCompleted + 1);
 }
 
 var Game = React.createClass({ displayName: 'Game',
@@ -304,7 +304,7 @@ var Welcome = React.createClass({ displayName: 'Welcome',
 var Main = React.createClass({ displayName: "Main",
 
   render: function render() {
-    return React.createElement("div", { className: "background" }, React.createElement(Welcome, null));
+    return React.createElement("div", { className: "outer-container" }, React.createElement("div", { className: "background" }), React.createElement(Welcome, null));
   }
 });
 
