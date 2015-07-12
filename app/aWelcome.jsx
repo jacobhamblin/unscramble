@@ -44,6 +44,24 @@ var Welcome = React.createClass({
     this.setState({ difficulty: event.target.className })
   },
 
+  makeBoxes: function() {
+    var letters = [];
+    var array = ['U', 'n', 's', 'c', 'r', 'a', 'm', 'b', 'l', 'e'];
+    for (var i = 0; i < array.length; i++) {
+      var letter = array[i];
+      letters.push(
+        <div className='letter-box'>
+          <div className='letter'>
+            {letter}
+          </div>
+        </div>
+      )
+    }
+    return (
+      {letters}
+    )
+  },
+
   render: function() {
     if (this.state.words) {
       return (
@@ -53,7 +71,7 @@ var Welcome = React.createClass({
       return (
         <div className='container'>
           <div className='welcome'>
-              Unscramble!
+              {this.makeBoxes()}
           </div>
           <div className='difficulties'>
             <div className='easy' onClick={this.difficultyClick} />

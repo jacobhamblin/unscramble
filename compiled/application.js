@@ -8,6 +8,15 @@ for (var i = 0; i < 26; i++) {
 }
 
 var wordsCompleted = 0;
+var mod = 0;
+animate();
+
+function animate() {
+  requestAnimationFrame(animate);
+  $('.background').css('-webkit-filter', 'hue-rotate(' + (Math.cos(mod) - 1) * 50 + 'deg)');
+
+  mod += .005 * (wordsCompleted + 1);
+}
 
 var Game = React.createClass({ displayName: 'Game',
 
@@ -130,7 +139,6 @@ var Game = React.createClass({ displayName: 'Game',
         }
       }
       this.checkWordCompleted();
-      console.log(this.state.selectedLetters.join(''));
     }
   },
 
@@ -215,7 +223,7 @@ var Game = React.createClass({ displayName: 'Game',
   },
 
   render: function render() {
-    return React.createElement('div', { className: 'container' }, React.createElement('div', { className: 'wordShow' }, this.makeBoxes()), React.createElement('div', { className: 'stats-container' }, React.createElement('div', { className: 'score' }, this.computeScore()), React.createElement('div', { className: 'timer' }, 60 - this.state.secondsElapsed)));
+    return React.createElement('div', { className: 'container' }, React.createElement('div', { className: 'wordShow' }, this.makeBoxes()), React.createElement('div', { className: 'stats-container' }, React.createElement('div', { className: 'score' }, this.computeScore()), React.createElement('div', { className: 'timer' }, 60 - this.state.secondsElapsed), React.createElement('div', { className: 'wordsCompleted' }, wordsCompleted)));
   }
 });
 'use strict';
@@ -268,11 +276,21 @@ var Welcome = React.createClass({ displayName: 'Welcome',
     this.setState({ difficulty: event.target.className });
   },
 
+  makeBoxes: function makeBoxes() {
+    var letters = [];
+    var array = ['U', 'n', 's', 'c', 'r', 'a', 'm', 'b', 'l', 'e'];
+    for (var i = 0; i < array.length; i++) {
+      var letter = array[i];
+      letters.push(React.createElement('div', { className: 'letter-box' }, React.createElement('div', { className: 'letter' }, letter)));
+    }
+    return { letters: letters };
+  },
+
   render: function render() {
     if (this.state.words) {
       return React.createElement(Game, { words: this.state.words, difficulty: this.state.difficulty });
     } else {
-      return React.createElement('div', { className: 'container' }, React.createElement('div', { className: 'welcome' }, 'Unscramble!'), React.createElement('div', { className: 'difficulties' }, React.createElement('div', { className: 'easy', onClick: this.difficultyClick }), React.createElement('div', { className: 'medium', onClick: this.difficultyClick }), React.createElement('div', { className: 'hard', onClick: this.difficultyClick })));
+      return React.createElement('div', { className: 'container' }, React.createElement('div', { className: 'welcome' }, this.makeBoxes()), React.createElement('div', { className: 'difficulties' }, React.createElement('div', { className: 'easy', onClick: this.difficultyClick }), React.createElement('div', { className: 'medium', onClick: this.difficultyClick }), React.createElement('div', { className: 'hard', onClick: this.difficultyClick })));
     }
   }
 })

@@ -7,6 +7,16 @@ for (var i = 0; i < 26; i++) {
 }
 
 var wordsCompleted = 0;
+var mod = 0;
+animate();
+
+function animate () {
+  requestAnimationFrame(animate);
+  $('.background').css('-webkit-filter', 'hue-rotate(' + ((Math.cos(mod) - 1) * 50) + 'deg)');
+
+  mod += (.005 * (wordsCompleted + 1));
+}
+
 
 var Game = React.createClass({
 
@@ -120,7 +130,7 @@ var Game = React.createClass({
           });
         }
       } else {
-        if (unselectedLetters.indexOf(ALPHABET[keyCode - 65]) > -1) {  
+        if (unselectedLetters.indexOf(ALPHABET[keyCode - 65]) > -1) {
           var letter = ALPHABET[keyCode - 65];
           unselectedLetters.splice(unselectedLetters.indexOf(letter), 1)
           selectedLetters.push(letter);
@@ -131,7 +141,6 @@ var Game = React.createClass({
         }
       }
       this.checkWordCompleted();
-      console.log(this.state.selectedLetters.join(''));
     }
   },
 
@@ -235,6 +244,9 @@ var Game = React.createClass({
           </div>
           <div className='timer'>
             {60 - this.state.secondsElapsed}
+          </div>
+          <div className='wordsCompleted'>
+            {wordsCompleted}
           </div>
         </div>
       </div>
