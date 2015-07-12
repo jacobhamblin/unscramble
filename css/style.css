@@ -108,8 +108,7 @@ body {
   -webkit-filter: invert(0.95);
   transition: all 0.3s ease;
   background-image: url("../img/hard.png");
-  order: 3;
-  background-position: 0 -10px; }
+  order: 3; }
   .hard:hover {
     -webkit-filter: invert(1);
     background-size: 187px;
