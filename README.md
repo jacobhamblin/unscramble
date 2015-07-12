@@ -14,5 +14,5 @@ Coding challenge for Opendoor
 ## Todo
 
 ###I want to:
-* Add cool tween animations to move the letters as user types word.
-* Animate background with (semi)subtle hue rotation.
+- [] Add cool tween animations to move the letters as user types word.
+- [x] Animate background with (semi)subtle hue rotation.
