@@ -159,6 +159,10 @@ body {
     text-align: center;
     color: #fff; }
 
+.letter-box:not(.letter-move) {
+  -webkit-filter: blur(0px);
+  transition: -webkit-filter 0.5s ease-in; }
+
 .selected {
   background-color: rgba(0, 255, 255, 0.3);
   color: yellow; }
@@ -194,3 +198,6 @@ body {
   font-size: 3em;
   font-weight: 100;
   order: 2; }
+
+.letter-move {
+  -webkit-filter: blur(2px); }

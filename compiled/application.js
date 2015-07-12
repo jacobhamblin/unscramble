@@ -16,6 +16,11 @@ function animate() {
   $('.background').css('-webkit-filter', 'hue-rotate(' + (Math.cos(mod) - 1) * 50 + 'deg)');
 
   mod += .0025 * (wordsCompleted + 1);
+
+  var blurred = $('.letter-move');
+  for (var i = 0; i < blurred.length; i++) {
+    $(blurred[i]).removeClass('letter-move');
+  }
 }
 
 var Game = React.createClass({ displayName: 'Game',
@@ -199,8 +204,13 @@ var Game = React.createClass({ displayName: 'Game',
 
   populateLetters: function populateLetters(compilation, array, selected) {
     var className = selected ? 'letter-box selected' : 'letter-box';
+    var selection = selected ? 'selected' : 'unselected';
     for (var i = 0; i < array.length; i++) {
       var letter = array[i];
+      var key = selection + i.toString();
+      if (selected && i === array.length - 1) {
+        className = className + ' letter-move';
+      }
       compilation.push(React.createElement('div', { className: className }, React.createElement('div', { className: 'letter' }, letter)));
     }
     return compilation;
@@ -293,12 +303,7 @@ var Welcome = React.createClass({ displayName: 'Welcome',
       return React.createElement('div', { className: 'container' }, React.createElement('div', { className: 'welcome' }, this.makeBoxes()), React.createElement('div', { className: 'difficulties' }, React.createElement('div', { className: 'easy', onClick: this.difficultyClick }), React.createElement('div', { className: 'medium', onClick: this.difficultyClick }), React.createElement('div', { className: 'hard', onClick: this.difficultyClick })));
     }
   }
-})
-
-// 74cda975756707817800802c86206415d567812799f8139d5
-//
-// http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=true&includePartOfSpeech=adjective&minCorpusCount=0&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=5&maxLength=5&limit=20&api_key=74cda975756707817800802c86206415d567812799f8139d5 | python -mjson.tool
-;
+});
 "use strict";
 
 var Main = React.createClass({ displayName: "Main",

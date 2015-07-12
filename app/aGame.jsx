@@ -15,8 +15,12 @@ function animate () {
   $('.background').css('-webkit-filter', 'hue-rotate(' + ((Math.cos(mod) - 1) * 50) + 'deg)');
 
   mod += (.0025 * (wordsCompleted + 1));
-}
 
+  var blurred = $('.letter-move');
+  for (var i = 0; i < blurred.length; i++) {
+    $(blurred[i]).removeClass('letter-move');
+  }
+}
 
 var Game = React.createClass({
 
@@ -201,8 +205,13 @@ var Game = React.createClass({
 
   populateLetters: function(compilation, array, selected) {
     var className = selected ? 'letter-box selected' : 'letter-box';
+    var selection = selected ? 'selected' : 'unselected';
     for (var i = 0; i < array.length; i++) {
       var letter = array[i];
+      var key = selection + i.toString();
+      if (selected && i === array.length - 1) {
+        className = className + ' letter-move';
+      }
       compilation.push(
         <div className={className}>
           <div className='letter'>

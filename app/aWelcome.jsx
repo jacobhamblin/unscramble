@@ -84,8 +84,3 @@ var Welcome = React.createClass({
 
   }
 })
-
-
-// 74cda975756707817800802c86206415d567812799f8139d5
-//
-// http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=true&includePartOfSpeech=adjective&minCorpusCount=0&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=5&maxLength=5&limit=20&api_key=74cda975756707817800802c86206415d567812799f8139d5 | python -mjson.tool

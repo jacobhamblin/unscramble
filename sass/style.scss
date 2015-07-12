@@ -142,6 +142,11 @@ body {
   }
 }
 
+.letter-box:not(.letter-move) {
+  -webkit-filter: blur(0px);
+  transition: -webkit-filter .5s ease-in;
+}
+
 .selected {
   background-color: rgba(0, 255, 255, 0.3);
   color: rgba(255, 255, 0, 1);
@@ -176,4 +181,8 @@ body {
 .wordsCompleted {
   @include stats;
   order: 2;
+}
+
+.letter-move {
+  -webkit-filter: blur(2px);
 }
