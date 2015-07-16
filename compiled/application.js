@@ -147,39 +147,52 @@ var Game = React.createClass({ displayName: 'Game',
     }
   },
 
-  checkWordCompleted: function checkWordCompleted() {
-    if (this.state.selectedLetters.join('') === this.state.currentWord) {
-      wordsCompleted += 1;
-      if (wordsCompleted === 10) {
-        this.setState({
-          gameOver: 'Win',
-          selectedLetters: []
-        });
-      } else {
-        var keyCodes = this.setAcceptedKeyCodes();
-        var curWord = this.props.words[wordsCompleted].toLowerCase();
-        var shuffledWord = this.shuffleWord(curWord);
+  nextWord: function nextWord() {
+    wordsCompleted += 1;
+    if (wordsCompleted === 10) {
+      this.setState({
+        gameOver: 'Win',
+        selectedLetters: []
+      });
+    } else {
+      var keyCodes = this.setAcceptedKeyCodes();
+      var curWord = this.props.words[wordsCompleted].toLowerCase();
+      var shuffledWord = this.shuffleWord(curWord);
 
-        this.setState({
-          currentWord: curWord,
-          keyCodes: keyCodes,
-          shuffledWord: shuffledWord,
-          selectedLetters: [],
-          unselectedLetters: shuffledWord.split('')
-        });
-      }
+      this.setState({
+        currentWord: curWord,
+        keyCodes: keyCodes,
+        shuffledWord: shuffledWord,
+        selectedLetters: [],
+        unselectedLetters: shuffledWord.split('')
+      });
+    }
+  },
+
+  checkWordCompleted: function checkWordCompleted() {
+    var self = this;
+    if (this.state.selectedLetters.join('') === this.state.currentWord) {
+      this.nextWord();
     } else if (this.state.selectedLetters.length === this.state.currentWord.length) {
-      var letters = $('.letter-box');
-      for (var i = 0; i < letters.length; i++) {
-        var letterBox = $(letters[i]);
-        letterBox.addClass('wrong');
-      }
-      setTimeout(function () {
-        for (var i = 0; i < letters.length; i++) {
-          var letterBox = $(letters[i]);
-          letterBox.removeClass('wrong');
+      var url = 'http://api.wordnik.com:80/v4/word.json/' + this.state.selectedLetters.join('') + '/definitions?limit=1&includeRelated=true&useCanonical=false&includeTags=false&api_key=74cda975756707817800802c86206415d567812799f8139d5';
+
+      $.getJSON(url, function (result) {
+        if (result.length === 0) {
+          var letters = $('.letter-box');
+          for (var i = 0; i < letters.length; i++) {
+            var letterBox = $(letters[i]);
+            letterBox.addClass('wrong');
+          }
+          setTimeout(function () {
+            for (var i = 0; i < letters.length; i++) {
+              var letterBox = $(letters[i]);
+              letterBox.removeClass('wrong');
+            }
+          }, 100);
+        } else {
+          self.nextWord();
         }
-      }, 100);
+      });
     }
   },
 
@@ -263,7 +276,7 @@ var Welcome = React.createClass({ displayName: 'Welcome',
           min = '4';
           max = '6';
         }
-        var url = 'http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=true&includePartOfSpeech=adjective&minCorpusCount=0&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=' + min + '&maxLength=' + max + '&limit=10&api_key=74cda975756707817800802c86206415d567812799f8139d5';
+        var url = 'http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=true&includePartOfSpeech=adjective&minCorpusCount=10000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=' + min + '&maxLength=' + max + '&limit=10&api_key=74cda975756707817800802c86206415d567812799f8139d5';
 
         $.getJSON(url, function (result) {
           var words = [];
