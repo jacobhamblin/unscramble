@@ -6,7 +6,7 @@ Coding challenge for Opendoor
 
 ## Features
 
-* Select a difficulty, which increases or decreases the length of the words.
+* Select a difficulty, which increases or decreases the length of the words returned from wordnik API.
 * Type to reorder the word.
 * 60 second timer to guess 10 words.
 * Score calculated by difficulty, words completed and full completion bonus.
@@ -14,7 +14,7 @@ Coding challenge for Opendoor
 ## Todo
 
 ###I want to:
-- [] Add cool tween animations to move the letters as user types word.
+- [ ] Add cool tween animations to move the letters as user types word.
 - [x] Animate background with (semi)subtle hue rotation.
 - [x] Reduce complexity of words.
 - [x] Add anagram support.
