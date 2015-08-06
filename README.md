@@ -1,6 +1,6 @@
 #Unscramble!
 
-Coding challenge for Opendoor
+Rearrange the letters, form a word!
 
 [live](http://jacobhamblin.github.io/unscramble)
 
