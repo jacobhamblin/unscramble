@@ -329,7 +329,7 @@ var Welcome = React.createClass({ displayName: "Welcome",
     if (this.state.words) {
       return React.createElement(Game, { words: this.state.words, difficulty: this.state.difficulty, reset: this.reset });
     } else {
-      return React.createElement("div", { className: "container" }, React.createElement("div", { className: "welcome" }, this.makeBoxes()), React.createElement("div", { className: "difficulties" }, React.createElement("div", { className: "easy", onClick: this.difficultyClick }), React.createElement("div", { className: "medium", onClick: this.difficultyClick }), React.createElement("div", { className: "hard", onClick: this.difficultyClick })));
+      return React.createElement("div", { className: "container" }, React.createElement("div", { className: "welcome" }, this.makeBoxes()), React.createElement("header", null, "Difficulty:"), React.createElement("div", { className: "difficulties" }, React.createElement("div", { className: "easy", onClick: this.difficultyClick }), React.createElement("div", { className: "medium", onClick: this.difficultyClick }), React.createElement("div", { className: "hard", onClick: this.difficultyClick })));
     }
   }
 });

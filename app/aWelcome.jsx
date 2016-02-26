@@ -79,6 +79,7 @@ var Welcome = React.createClass({
           <div className='welcome'>
               {this.makeBoxes()}
           </div>
+          <header>Difficulty:</header>
           <div className='difficulties'>
             <div className='easy' onClick={this.difficultyClick} />
             <div className='medium' onClick={this.difficultyClick} />

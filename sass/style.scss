@@ -12,6 +12,7 @@
   cursor: pointer;
   -webkit-filter: invert(0.95);
   transition: all .3s ease;
+  display: inline-block;
   &:hover {
     -webkit-filter: invert(1.0);
     -webkit-transform: scale(1.1);
@@ -52,6 +53,14 @@ body {
   position: absolute;
 }
 
+header {
+  top: 42%;
+  position: relative;
+  transform: translateY(-42%);
+  color: #f7f7f7;
+  text-align: center;
+}
+
 .difficulties {
   top: 42%;
   position: relative;
@@ -62,6 +71,7 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  margin-top: 2em;
 }
 
 .welcome {

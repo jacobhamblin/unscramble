@@ -46,6 +46,13 @@ body {
   height: 100%;
   position: absolute; }
 
+header {
+  top: 42%;
+  position: relative;
+  transform: translateY(-42%);
+  color: #f7f7f7;
+  text-align: center; }
+
 .difficulties {
   top: 42%;
   position: relative;
@@ -55,7 +62,8 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center; }
+  align-items: center;
+  margin-top: 2em; }
 
 .welcome {
   position: relative;
@@ -95,7 +103,8 @@ body {
   background-size: 70px;
   cursor: pointer;
   -webkit-filter: invert(0.95);
-  transition: all .3s ease; }
+  transition: all .3s ease;
+  display: inline-block; }
   .easy:hover {
     -webkit-filter: invert(1);
     -webkit-transform: scale(1.1);
@@ -111,7 +120,8 @@ body {
   background-size: 75px;
   cursor: pointer;
   -webkit-filter: invert(0.95);
-  transition: all .3s ease; }
+  transition: all .3s ease;
+  display: inline-block; }
   .medium:hover {
     -webkit-filter: invert(1);
     -webkit-transform: scale(1.1);
@@ -126,6 +136,7 @@ body {
   cursor: pointer;
   -webkit-filter: invert(0.95);
   transition: all .3s ease;
+  display: inline-block;
   background-image: url("../img/hard.png");
   order: 3; }
   .hard:hover {
