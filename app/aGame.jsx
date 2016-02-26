@@ -14,7 +14,7 @@ function animate () {
   requestAnimationFrame(animate);
   $('.background').css('-webkit-filter', 'hue-rotate(' + ((Math.cos(mod) - 1) * 50) + 'deg)');
 
-  mod += (.0025 * (wordsCompleted + 1));
+  mod += (0.0025 * (wordsCompleted + 1));
 
   var blurred = $('.letter-move');
   for (var i = 0; i < blurred.length; i++) {
@@ -28,6 +28,7 @@ var Game = React.createClass({
     var currentWord = this.props.words[0].toLowerCase();
     var shuffledWord = this.shuffleWord(currentWord);
     var keyCodes = this.setAcceptedKeyCodes();
+    var reset = this.props.reset;
     return {
       currentWord: currentWord,
       keyCodes: keyCodes,
@@ -35,6 +36,7 @@ var Game = React.createClass({
       secondsElapsed: 0,
       shuffledWord: shuffledWord,
       selectedLetters: [],
+      reset: reset,
       unselectedLetters: shuffledWord.split(''),
     }
   },
@@ -210,10 +212,25 @@ var Game = React.createClass({
     }
   },
 
+  resetGame: function() {
+    wordsCompleted = 0;
+    mod = 0;
+    this.props.reset();
+  },
+
   shuffleWord: function (word) {
     var o = word.split('');
     for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
     return o.join('');
+  },
+
+  playAgain: function() {
+    if (this.state.gameOver) {
+      var question = (<div onClick={this.resetGame}>Play again</div>)
+      return (
+        {question}
+      );
+    }
   },
 
   populateLetters: function(compilation, array, selected) {
@@ -257,6 +274,9 @@ var Game = React.createClass({
   render: function() {
     return (
       <div className='container'>
+        <div className="playAgain">
+          {this.playAgain()}
+        </div>
         <div className='wordShow'>
           {this.makeBoxes()}
         </div>

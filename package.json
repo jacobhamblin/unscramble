@@ -1,0 +1,37 @@
+{
+  "name": "unscramble",
+  "version": "1.0.0",
+  "description": "unscramble the letters make a word!",
+  "main": "index.html",
+  "dependencies": {
+    "gulp-plumber": "^1.1.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-babel": "^6.1.2",
+    "gulp": "^3.9.1",
+    "gulp-sass": "^2.2.0",
+    "react": "^0.14.7",
+    "gulp-react": "^3.1.0",
+    "gulp-uglify": "^1.5.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "gulp",
+    "sass": "gulp sass"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jacobhamblin/unscramble.git"
+  },
+  "keywords": [
+    "gulp",
+    "react",
+    "fun"
+  ],
+  "author": "Jacob Hamblin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jacobhamblin/unscramble/issues"
+  },
+  "homepage": "https://github.com/jacobhamblin/unscramble#readme"
+}

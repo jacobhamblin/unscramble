@@ -1,4 +1,3 @@
-'use strict';
 
 var ALPHABET = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
@@ -15,7 +14,7 @@ function animate() {
   requestAnimationFrame(animate);
   $('.background').css('-webkit-filter', 'hue-rotate(' + (Math.cos(mod) - 1) * 50 + 'deg)');
 
-  mod += .0025 * (wordsCompleted + 1);
+  mod += 0.0025 * (wordsCompleted + 1);
 
   var blurred = $('.letter-move');
   for (var i = 0; i < blurred.length; i++) {
@@ -23,12 +22,13 @@ function animate() {
   }
 }
 
-var Game = React.createClass({ displayName: 'Game',
+var Game = React.createClass({ displayName: "Game",
 
-  getInitialState: function getInitialState() {
+  getInitialState: function () {
     var currentWord = this.props.words[0].toLowerCase();
     var shuffledWord = this.shuffleWord(currentWord);
     var keyCodes = this.setAcceptedKeyCodes();
+    var reset = this.props.reset;
     return {
       currentWord: currentWord,
       keyCodes: keyCodes,
@@ -36,11 +36,12 @@ var Game = React.createClass({ displayName: 'Game',
       secondsElapsed: 0,
       shuffledWord: shuffledWord,
       selectedLetters: [],
+      reset: reset,
       unselectedLetters: shuffledWord.split('')
     };
   },
 
-  setAcceptedKeyCodes: function setAcceptedKeyCodes() {
+  setAcceptedKeyCodes: function () {
     var keyCodes = new Object();
     var currentWord = this.props.words[wordsCompleted].toLowerCase();
 
@@ -57,12 +58,12 @@ var Game = React.createClass({ displayName: 'Game',
     return keyCodes;
   },
 
-  componentDidMount: function componentDidMount() {
+  componentDidMount: function () {
     document.addEventListener('keydown', this.keyDown);
     this.interval = setInterval(this.tick, 1000);
   },
 
-  tick: function tick() {
+  tick: function () {
     this.setState({
       secondsElapsed: this.state.secondsElapsed + 1
     });
@@ -78,7 +79,7 @@ var Game = React.createClass({ displayName: 'Game',
     }
   },
 
-  keyDown: function keyDown(event) {
+  keyDown: function (event) {
     if (event.which === 17 || this.state.gameOver) {
       return;
     }
@@ -90,7 +91,7 @@ var Game = React.createClass({ displayName: 'Game',
     }
   },
 
-  computeScore: function computeScore() {
+  computeScore: function () {
     var difficulty = this.props.difficulty;
     var multiplier = 0;
     var bonus = 0;
@@ -110,7 +111,7 @@ var Game = React.createClass({ displayName: 'Game',
     return (wordsCompleted * 50 + bonus) * multiplier;
   },
 
-  alterFormingWord: function alterFormingWord(keyCode) {
+  alterFormingWord: function (keyCode) {
     if (this.state.selectedLetters.length < this.state.currentWord.length) {
       var unselectedLetters = this.state.unselectedLetters;
       var selectedLetters = this.state.selectedLetters;
@@ -125,8 +126,8 @@ var Game = React.createClass({ displayName: 'Game',
         }
       } else if (keyCode === 222) {
         if (unselectedLetters.indexOf('\'') > -1) {
-          unselectedLetters.splice(unselectedLetters.indexOf('-'), 1);
-          selectedLetters.push('-');
+          unselectedLetters.splice(unselectedLetters.indexOf('\-'), 1);
+          selectedLetters.push('\-');
           this.setState({
             selectedLetters: selectedLetters,
             unselectedLetters: unselectedLetters
@@ -147,7 +148,7 @@ var Game = React.createClass({ displayName: 'Game',
     }
   },
 
-  nextWord: function nextWord() {
+  nextWord: function () {
     wordsCompleted += 1;
     if (wordsCompleted === 10) {
       this.setState({
@@ -169,7 +170,7 @@ var Game = React.createClass({ displayName: 'Game',
     }
   },
 
-  checkWordCompleted: function checkWordCompleted() {
+  checkWordCompleted: function () {
     var self = this;
     if (this.state.selectedLetters.join('') === this.state.currentWord) {
       this.nextWord();
@@ -196,7 +197,7 @@ var Game = React.createClass({ displayName: 'Game',
     }
   },
 
-  removeLetter: function removeLetter() {
+  removeLetter: function () {
     var selectedLetters = this.state.selectedLetters;
     var unselectedLetters = this.state.unselectedLetters;
     if (selectedLetters.length > 0) {
@@ -209,13 +210,26 @@ var Game = React.createClass({ displayName: 'Game',
     }
   },
 
-  shuffleWord: function shuffleWord(word) {
+  resetGame: function () {
+    wordsCompleted = 0;
+    mod = 0;
+    this.props.reset();
+  },
+
+  shuffleWord: function (word) {
     var o = word.split('');
     for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
     return o.join('');
   },
 
-  populateLetters: function populateLetters(compilation, array, selected) {
+  playAgain: function () {
+    if (this.state.gameOver) {
+      var question = React.createElement("div", { onClick: this.resetGame }, "Play again");
+      return { question };
+    }
+  },
+
+  populateLetters: function (compilation, array, selected) {
     var className = selected ? 'letter-box selected' : 'letter-box';
     var selection = selected ? 'selected' : 'unselected';
     for (var i = 0; i < array.length; i++) {
@@ -224,12 +238,12 @@ var Game = React.createClass({ displayName: 'Game',
       if (selected && i === array.length - 1) {
         className = className + ' letter-move';
       }
-      compilation.push(React.createElement('div', { className: className }, React.createElement('div', { className: 'letter' }, letter)));
+      compilation.push(React.createElement("div", { className: className }, React.createElement("div", { className: "letter" }, letter)));
     }
     return compilation;
   },
 
-  makeBoxes: function makeBoxes() {
+  makeBoxes: function () {
     var selectedLetters = this.state.selectedLetters;
     var unselectedLetters = this.state.unselectedLetters;
     if (this.state.gameOver === 'Win') {
@@ -242,86 +256,86 @@ var Game = React.createClass({ displayName: 'Game',
     letters = this.populateLetters(letters, selectedLetters, true);
     letters = this.populateLetters(letters, unselectedLetters, false);
     console.log(this.state.currentWord);
-    return { letters: letters };
+    return { letters };
   },
 
-  render: function render() {
-    return React.createElement('div', { className: 'container' }, React.createElement('div', { className: 'wordShow' }, this.makeBoxes()), React.createElement('div', { className: 'stats-container' }, React.createElement('div', { className: 'score' }, this.computeScore()), React.createElement('div', { className: 'timer' }, 60 - this.state.secondsElapsed), React.createElement('div', { className: 'wordsCompleted' }, wordsCompleted)));
+  render: function () {
+    return React.createElement("div", { className: "container" }, React.createElement("div", { className: "playAgain" }, this.playAgain()), React.createElement("div", { className: "wordShow" }, this.makeBoxes()), React.createElement("div", { className: "stats-container" }, React.createElement("div", { className: "score" }, this.computeScore()), React.createElement("div", { className: "timer" }, 60 - this.state.secondsElapsed), React.createElement("div", { className: "wordsCompleted" }, wordsCompleted)));
   }
 });
-'use strict';
+var Welcome = React.createClass({ displayName: "Welcome",
 
-var Welcome = React.createClass({ displayName: 'Welcome',
-
-  getInitialState: function getInitialState() {
+  getInitialState: function () {
     return {
       difficulty: false,
-      clicked: false,
       words: false
     };
   },
 
-  componentDidUpdate: function componentDidUpdate() {
-    if (this.state.difficulty) {
-      var fetchWords = function fetchWords(difficulty) {
-        var min = 0;
-        var max = 0;
-        if (difficulty === 'hard') {
-          min = '6';
-          max = '10';
-        } else if (difficulty === 'medium') {
-          min = '5';
-          max = '8';
-        } else if (difficulty === 'easy') {
-          min = '4';
-          max = '6';
+  fetchWords: function (difficulty) {
+    var self = this;
+    if (this.state.difficulty && !this.state.words) {
+      var min = 0;
+      var max = 0;
+      if (difficulty === 'hard') {
+        min = '6';
+        max = '10';
+      } else if (difficulty === 'medium') {
+        min = '5';
+        max = '8';
+      } else if (difficulty === 'easy') {
+        min = '4';
+        max = '6';
+      }
+      var url = 'http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=true&includePartOfSpeech=adjective&minCorpusCount=10000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=' + min + '&maxLength=' + max + '&limit=10&api_key=74cda975756707817800802c86206415d567812799f8139d5';
+
+      $.getJSON(url, function (result) {
+        var words = [];
+        for (var i = 0; i < result.length; i++) {
+          words.push(result[i].word);
         }
-        var url = 'http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=true&includePartOfSpeech=adjective&minCorpusCount=10000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=' + min + '&maxLength=' + max + '&limit=10&api_key=74cda975756707817800802c86206415d567812799f8139d5';
-
-        $.getJSON(url, function (result) {
-          var words = [];
-          for (var i = 0; i < result.length; i++) {
-            words.push(result[i].word);
-          }
-          self.state.words = words.sort(function (a, b) {
-            return a.length - b.length;
-          });
+        var sortedWords = words.sort(function (a, b) {
+          return a.length - b.length;
         });
-      };
 
-      var self = this;
-
-      fetchWords(this.state.difficulty);
+        self.setState({ words: sortedWords });
+      });
     }
   },
 
-  difficultyClick: function difficultyClick(event) {
-    this.setState({ difficulty: event.target.className });
+  reset: function () {
+    this.setState({
+      difficulty: false,
+      words: false
+    });
   },
 
-  makeBoxes: function makeBoxes() {
+  difficultyClick: function (event) {
+    this.setState({ difficulty: event.target.className });
+    this.fetchWords(event.target.className);
+  },
+
+  makeBoxes: function () {
     var letters = [];
     var array = ['U', 'n', 's', 'c', 'r', 'a', 'm', 'b', 'l', 'e'];
     for (var i = 0; i < array.length; i++) {
       var letter = array[i];
-      letters.push(React.createElement('div', { className: 'letter-box' }, React.createElement('div', { className: 'letter' }, letter)));
+      letters.push(React.createElement("div", { className: "letter-box" }, React.createElement("div", { className: "letter" }, letter)));
     }
-    return { letters: letters };
+    return { letters };
   },
 
-  render: function render() {
+  render: function () {
     if (this.state.words) {
-      return React.createElement(Game, { words: this.state.words, difficulty: this.state.difficulty });
+      return React.createElement(Game, { words: this.state.words, difficulty: this.state.difficulty, reset: this.reset });
     } else {
-      return React.createElement('div', { className: 'container' }, React.createElement('div', { className: 'welcome' }, this.makeBoxes()), React.createElement('div', { className: 'difficulties' }, React.createElement('div', { className: 'easy', onClick: this.difficultyClick }), React.createElement('div', { className: 'medium', onClick: this.difficultyClick }), React.createElement('div', { className: 'hard', onClick: this.difficultyClick })));
+      return React.createElement("div", { className: "container" }, React.createElement("div", { className: "welcome" }, this.makeBoxes()), React.createElement("div", { className: "difficulties" }, React.createElement("div", { className: "easy", onClick: this.difficultyClick }), React.createElement("div", { className: "medium", onClick: this.difficultyClick }), React.createElement("div", { className: "hard", onClick: this.difficultyClick })));
     }
   }
 });
-"use strict";
-
 var Main = React.createClass({ displayName: "Main",
 
-  render: function render() {
+  render: function () {
     return React.createElement("div", { className: "outer-container" }, React.createElement("div", { className: "background" }), React.createElement(Welcome, null));
   }
 });
