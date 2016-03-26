@@ -7,9 +7,14 @@ var Welcome = React.createClass({
     }
   },
 
+  difficultyClick: function(event) {
+    this.setState({ difficulty: event.target.className });
+    this.fetchWords(event.target.className);
+  },
+
   fetchWords: function (difficulty) {
     var self = this;
-    if (this.state.difficulty && !this.state.words) {
+    if (!this.state.words) {
       var min = 0;
       var max = 0;
       if (difficulty === 'hard') {
@@ -43,11 +48,6 @@ var Welcome = React.createClass({
       difficulty: false,
       words: false
     });
-  },
-
-  difficultyClick: function(event) {
-    this.setState({ difficulty: event.target.className });
-    this.fetchWords(event.target.className);
   },
 
   makeBoxes: function() {
