@@ -189,6 +189,7 @@ var Game = React.createClass({ displayName: "Game",
               var letterBox = $(letters[i]);
               letterBox.removeClass('wrong');
             }
+            self.clearSelectedLetters();
           }, 100);
         } else {
           self.nextWord();
@@ -208,6 +209,15 @@ var Game = React.createClass({ displayName: "Game",
         unselectedLetters: unselectedLetters
       });
     }
+  },
+
+  clearSelectedLetters: function () {
+    var selectedLetters = this.state.selectedLetters;
+    var unselectedLetters = this.state.unselectedLetters;
+    this.setState({
+      selectedLetters: [],
+      unselectedLetters: selectedLetters.concat(unselectedLetters)
+    });
   },
 
   resetGame: function () {
